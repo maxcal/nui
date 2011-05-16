@@ -339,51 +339,6 @@ A css / html visual item for use in the big old openspace.
     	$('#sandbox .omnilink').show();
     }
 
-    //------------ proFrame ------------------------------- //
-    var proFrame = createModule("Progressive Frame");
-
-    proFrame.options = {
-
-        base: {
-            template: {
-                properties: ['standard']
-            },
-            skin: {
-                properties: ['curled', 'raised', 'post-it']
-            }
-        },
-
-        pane: {
-            hasMultiplePane: true,
-            header: true,
-            content: true,
-            title: true,
-            url: {
-                tooltip: "Input URL, Applied to header"
-            }
-        },
-
-        sandboxCSS: {
-            padding: 20,
-            borderWidth: 1,
-            width: "auto"
-        }
-
-    };
-
-    proFrame.build = function() {
-
-        var $o;
-
-        $o = $('<div class="nuiProFrame"></div>').addClass(this.val_template).addClass(this.val_skin).addClass("note")
-        //.find('.nuiProFrame')
-        .append('<h1 class="heading">' + this.val_header + '</h1>').append('<h2 class="cont">' + this.val_content + '</h2>')
-        //.end();
-        return $o;
-    };
-
-
-
     //------------ accordion ------------------------------- //
 
 
