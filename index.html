@@ -1,85 +1,78 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+	
 <html xml:lang="en-us" xmlns="http://www.w3.org/1999/xhtml" lang="en-us">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link href="https://github.com/maxcal/nui/raw/master/styles/nui.frontend.css" rel="stylesheet" media="screen"/>
+    <link href="https://github.com/maxcal/nui/raw/master/styles/nui.builder.css" rel="stylesheet" media="screen" />
+    <link rel="stylesheet" href="http://www.greenpeace.org/international/Templates/Planet3/Styles/all.css" type="text/css" />
 
-    <title>nui.builder</title>
-    <style type="text/css">
-/*<![CDATA[*/
-    #container {
-      margin: 0 auto;
-      width: 700px;
-    }
-    h1 { font-size: 3.8em; color: #000000; margin-bottom: 3px; }
-    h1 .small { font-size: 0.4em; }
-    h1 a { text-decoration: none }
-    h2 { font-size: 1.5em; color: #000000; }
-    h3 { text-align: center; color: #000000; }
-    a { color: #000000; }
-    .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
-    .download { float: right; }
-    pre { background: #000; color: #fff; padding: 15px;}
-    hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
-    .footer { text-align:center; padding-top:30px; font-style: italic; }
-    /*]]>*/
-    </style>
+    <title>nui.builder 1.0.1</title>
+    
+        
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js" type="text/javascript"></script>
+
+    <script src="https://github.com/maxcal/nui/raw/master/builder/js/utils/encoder.js" type="text/javascript"></script>
+    <script src="https://github.com/maxcal/nui/raw/master/builder/js/utils/htmlStyle.js" type="text/javascript"></script>
+    <script src="js/nui.frontend.js" type="text/javascript"></script>
+    
 </head>
 
 <body class="builder">
-    <h1 id="builder_title">nui.builder</h1>
+		<h1 id="builder_title">nui.builder 1.0.1</h1>
+	<div id="nui_builder" class="line">
 
-    <div id="nui_builder" class="line">
-        <div class="label_holder">
-            <h2 class="builder_label left">preview</h2>
-        </div>
+		<div class="label_holder">
+			<h2 class="builder_label left">preview</h2>			
+		</div>
+		<div class="sandbox" id="sandbox">
+		</div>
+		<div class="label_holder">
+			<h2 class="builder_label left">Basic Options</h2>			
+		</div>
+		<div class="base clearfix" id="base">
 
-        <div class="sandbox" id="sandbox"></div>
+		</div>
+		<div class="label_holder">
+			<h2 class="builder_label left">Controls</h2>			
+		</div>
+		<div class="controls clearfix">
+			<input value="Refresh" id="refresh" class="nuiButton t1 skin1 refresh" type="button" />
+			<input value="Add pane" id="addpane" class="nuiButton t1 skin3 add hasMultiplePane" type="button" />
+			<input value="Remove last pane" id="trimpane" class="nuiButton t1 skin3 trimpane hasMultiplePane" type="button" />
+		</div>
 
-        <div class="label_holder">
-            <h2 class="builder_label left">Basic Options</h2>
-        </div>
+		<div class="label_holder">
+			<h2 class="builder_label left">Panes</h2>			
+			<h2 class="builder_label right">html Output</h2>
+		</div>
 
-        <div class="base clearfix" id="base"></div>
+		
+		<div class="panes" id="panes">
+			<h2 class="builder_label left">Panes</h2>
+		</div>
 
-        <div class="label_holder">
-            <h2 class="builder_label left">Controls</h2>
-        </div>
+		
+				
+		<div class="source" id="source">
+			<!-- <input value="Copy" id="copy_source" class="nuiButton t1 skin2 add" type="button" /> -->
+			<input value="Invert Colors" id="inv_source" class="nuiButton t1 skin2 add" type="button" />
+			<textarea class="source_out" id="source_out" rows="20"></textarea>
+			
+		</div>
+		<div class="label_holder">
+			<h2 class="builder_label left">Log</h2>			
+		</div>
 
-        <div class="controls clearfix">
-            <input value="Refresh" id="refresh" class="nuiButton t1 skin1 refresh" type="button" /> <input value="Add pane" id="addpane" class="nuiButton t1 skin3 add hasMultiplePane" type="button" /> <input value="Remove last pane" id="trimpane" class="nuiButton t1 skin3 trimpane hasMultiplePane" type="button" />
-        </div>
-
-        <div class="label_holder">
-            <h2 class="builder_label left">Panes</h2>
-
-            <h2 class="builder_label right">html Output</h2>
-        </div>
-
-        <div class="panes" id="panes">
-            <h2 class="builder_label left">Panes</h2>
-        </div>
-
-        <div class="source" id="source">
-            <!-- <input value="Copy" id="copy_source" class="nuiButton t1 skin2 add" type="button" /> -->
-            <input value="Invert Colors" id="inv_source" class="nuiButton t1 skin2 add" type="button" /> 
-            <textarea class="source_out" id="source_out" rows="20">
-</textarea>
-        </div>
-
-        <div class="label_holder">
-            <h2 class="builder_label left">Log</h2>
-        </div>
-
-        <div class="logger" id="logger">
-            <ol id="log"></ol>
-        </div>
-    </div><script src="https://github.com/maxcal/nui/raw/master/builder/js/nui.builder.js" type="text/javascript">
-</script>
-
-    <div id="container">
-        <div class="download">
+		<div class="logger" id="logger">
+			<ol id="log">
+			</ol>
+		</div>
+		
+		
+	</div>	
+	<div class="download">
             <a href="http://github.com/maxcal/nui/zipball/master"><img border="0" width="90" src="http://github.com/images/modules/download/zip.png" /></a> <a href="http://github.com/maxcal/nui/tarball/master"><img border="0" width="90" src="http://github.com/images/modules/download/tar.png" /></a>
         </div>
 
@@ -112,6 +105,8 @@ $ git clone git://github.com/maxcal/nui
         <div class="footer">
             get the source code on GitHub : <a href="http://github.com/maxcal/nui">maxcal/nui</a>
         </div>
-    </div>
+            
+</div>
+<script src="https://github.com/maxcal/nui/raw/master/builder/js/nui.builder.js" type="text/javascript"></script>
 </body>
 </html>
