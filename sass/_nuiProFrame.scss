@@ -1,0 +1,127 @@
+.nuiProFrame{
+	&.t1{
+		
+		
+		
+		position:relative;    
+        padding:20px; 
+        margin: 1.2em 0; 
+        background:#fff;
+        -webkit-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 10px rgba(0, 0, 0, 0.02) inset;
+        -moz-box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 10px rgba(0, 0, 0, 0.02) inset;
+        box-shadow:0 1px 4px rgba(0, 0, 0, 0.3), 0 0 10px rgba(0, 0, 0, 0.02) inset;
+     
+
+        &:before,
+        &:after {
+            content:"";
+            position:absolute; 
+            z-index:-2;
+            bottom:15px;
+            left:10px;
+            width:50%;
+            height:20%;
+        }
+
+        &:after{                 
+            right:10px; 
+            left:auto;
+        }
+        
+        .heading {
+        font-family: georgia,serif;	
+        color: #66CC00;
+        padding-bottom: 0.3em;
+        border-bottom: 3px dotted #bdc3d1;
+        font-size: 24px;
+        }
+        
+        .cont{
+        	font: 15px georgia,serif;
+        }
+	}
+	// Page like drop shadow
+	
+	&.skin1 {
+	
+            -moz-border-radius:4px; 
+                 border-radius:4px;
+        
+        
+        &:before,
+        &:after { 
+			max-width:300px;
+			-webkit-box-shadow:0 15px 12px rgba(0, 0, 0, 0.2);   
+			-moz-box-shadow:0 15px 12px rgba(0, 0, 0, 0.2);
+			box-shadow:0 15px 12px rgba(0, 0, 0, 0.2);
+			-webkit-transform:rotate(-4deg);    
+			-moz-transform:rotate(-4deg);   
+			-o-transform:rotate(-4deg);
+			transform:rotate(-4deg);
+        }
+        
+        &:after {
+			-webkit-transform:rotate(4deg);   
+			-moz-transform:rotate(4deg);  
+			-o-transform:rotate(4deg);
+			transform:rotate(4deg);
+        }
+
+	}
+	// Raised
+	&.skin2:before  {
+		
+		width:auto;
+		right:10px;
+		left:10px;
+		bottom:0;
+		-webkit-box-shadow:0 8px 10px rgba(0, 0, 0, 0.2);
+		-moz-box-shadow:0 8px 10px rgba(0, 0, 0, 0.2);
+		box-shadow:0 8px 10px rgba(0, 0, 0, 0.2);
+	
+	}
+	
+	// note!
+	&.skin3 {
+		
+		width: 300px;
+		.heading, .cont{
+			color: #000;
+			border-bottom: none;
+		}   
+		-webkit-transform:rotate(4deg);   
+		-moz-transform:rotate(4deg);  
+		-o-transform:rotate(4deg);
+		transform:rotate(4deg);
+		
+		&::after{
+			width:100%;
+			height:100%;
+			right:0;
+			left:0;
+			bottom:0;
+			-webkit-box-shadow:0 12px 18px rgba(0, 0, 0, 0.2);
+			-moz-box-shadow:0 12px 18px rgba(0, 0, 0, 0.2);
+			box-shadow:0 12px 18px rgba(0, 0, 0, 0.2);
+		} 	
+		
+		&::before{
+		display: block;
+		position: absolute;
+		height: 50px;
+		width: 50px;
+		top: -5px;
+		left: 50%;
+		margin-left: -25px;	
+		background: url('/images/thumbtack.png') no-repeat left top transparent;
+		
+		}
+	}
+	
+	// TRIM!
+	
+	
+	
+	
+		  
+}

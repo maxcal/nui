@@ -1,0 +1,96 @@
+/* NUI V 0.6 
+
+Greenpeace nordic
+maintained by max.calabrese@greenpeace.org
+
+*/
+@import "compass";
+@import "compass/css3/box-shadow";
+
+@import "_nuiBasics";
+
+@import "_nuiAccordion";
+@import "_nuiButton";
+@import "_nuiForm";
+@import "_nuiOpenspace";
+@import "_nuiTabs";
+@import "_nuiFooter";
+@import "_hcard";
+@import "_nuiGrid.scss";
+@import "_nuiHeaderBox";
+@import "_nuiBasics";
+@import "_nuiBasicList.scss";
+@import "_nuiOpenMedia.scss";
+@import "_nordicstyles.scss";
+//@import "_nuiProFrame.scss";
+@import "_nuiPopup.scss";
+
+
+/* >>>>>>>>>>>> OVERRIDES <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< */
+.nuiForm#donation-form {
+	padding: 0;
+	margin-top: 0;
+}
+.nuiTabs.frpage {
+	margin-top: 8px;
+}
+
+/* NUI clearfix */
+// http://perishablepress.com/press/2008/02/05/lessons-learned-concerning-the-clearfix-css-hack/
+
+
+// Add selecors here:
+.clearfix, .copyright, .horizontal-list,.navTabs, .inputRow, .nuiForm fieldset, .pane, .basicList li, .basicList dd {
+	
+	// Good browsers
+	&:after {
+		visibility: hidden;
+		display: block;
+		font-size: 0;
+		content: " ";
+		clear: both;
+		height: 0;
+		background-color: red;
+	}
+	
+	// IE6
+	* html & {
+		zoom: 1;
+	
+	}
+	// IE7
+	*:first-child+html & {
+	 zoom: 1;
+	}
+}
+#sidebar {
+
+	margin-top: 5px;
+}
+
+.horizontal-list {
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+	
+	li {
+		float: left;	
+	}
+}
+
+.no_bullets, .no_bullits {
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+	
+	li {
+		margin-bottom: 3px;
+	}
+
+}
+
+a.act, span.act {
+	background: url("http://www.greenpeace.org/international/Global/international/planet-2/graphics/2007/4/act-arrow.png") no-repeat scroll 0 4px transparent;
+	background-position: left center;
+	padding-left: 16px;	
+}

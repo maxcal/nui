@@ -1,0 +1,62 @@
+
+.nuiHeaderBox {
+	
+	
+	&.skin1 {
+		width: 580px;
+		background-image: url("http://www.greenpeace.org/international/Templates/Planet3/Styles/images/box-m.gif");
+		//background-image: url("../styles/images/nuiHeaderBox/headerBox-skin1.gif");
+		background-repeat: repeat-y;
+		background-position: 0 bottom;
+		padding: 10px 21px 33px 19px;
+		position: relative;
+		font: 16px Georgia, serif;
+		color: #6E7F8B;
+		margin-top: 12px;
+		margin-bottom: 12px;
+		z-index: 0;
+		min-height: 80px;
+	
+		.trim {
+			background-image: url("http://www.greenpeace.org/finland/Global/finland/nui/images/headerbox/headerBox-skin1.gif") !important;
+			width: 620px;
+			position: absolute;
+			left: 0;
+			z-index: 0;
+			
+			
+			&.top {				
+				top: 0;				
+				background-position: 0 0 !important;
+				height: 62px;
+			}
+			&.bottom {
+				background-position: 0 -62px !important;
+				height: 111px;
+				bottom: 0;	
+			}
+		}
+		
+		.pane {
+			position: relative;
+			z-index: 1;
+		}
+		
+		h1 {
+			color:#66CC00;
+			font-size: 24px;
+			font-weight: bold;
+			background: url("http://www.greenpeace.org/international/Templates/Planet3/Styles/images/bg-border2.png") repeat-x scroll 0 bottom transparent;
+			padding-bottom: 10px;
+			margin: 2px 0 12px;
+		}
+		
+		h2 {
+			font-size: 16px;
+			font-weight: normal;
+			margin: 1px 0 12px;
+		}
+	}
+	
+	
+}

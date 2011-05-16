@@ -1,0 +1,9 @@
+.bundle
+log/*.log
+*.log
+/tmp/
+*.swp
+*~
+.project
+.DS_Store
+.sas-catche/**/* 

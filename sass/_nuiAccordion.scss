@@ -1,0 +1,249 @@
+/* ============= nuiAccordion ==============  
+V. 1.4
+*/
+
+
+.nuiAccordion {
+	
+	.trigger, .pane {
+		margin: 0;
+		padding: 0;
+		list-style-type: none;
+	}
+	
+	.trigger {
+		cursor: pointer;
+		display: block;
+		
+		.trim {
+			position: absolute;
+			top: 50%;
+			background: url("http://www.greenpeace.org/finland/Global/finland/nui/images/accordion/nuiAccordion-trim.png") no-repeat top left transparent;
+		}
+		
+	}
+	.pane {
+		position: relative;
+		display: block;
+	}
+	
+	a.nuiButton.t1.nextpane{
+	
+	}
+
+	// Horizontal accordion.
+	&.t1 {
+		.trigger {
+		}
+		.pane {
+		}
+	}
+	
+	// Vertical accordion.
+	&.t2 {
+		.trigger {}
+		.pane {}
+	}
+
+	// Standard P3 style
+	&.skin1 {
+		.trigger {
+			position: relative;
+			border: 6px solid #ebedf0;
+			border-left-width: 2px;
+			border-right-width: 2px;			 
+			font: bold 15px / 25px "Helvetica Neue", "Helvetica", "Arial", "Verdana", sans-serif #000;
+			padding: 10px 17px 10px 40px;
+			background-color: #fafbfb;
+			line-height: 24px;
+			margin-bottom: 5px;
+			overflow: visible;
+			
+			.trim {
+				margin-top: -12px;
+				width: 24px;
+				height: 24px;
+				left: 8px;
+				background: url("http://www.greenpeace.org/finland/Global/finland/nui/images/accordion/nuiAccordion-trim.png") no-repeat top left transparent;
+				color: #FFF;
+				font-weight: bold;
+				line-height: 24px;
+				text-align: center;
+			}			
+		
+			&.active {
+			  	margin-bottom: 0;
+			  	border-bottom-width: 0px;
+			  	
+			  	.trim {
+			  		background-position: -24px 0;
+			  	
+			  	}
+			}
+			  
+			&.complete {			
+				.trim {
+					background-position: -48px 0;
+			  	}
+			}
+			  
+			&.invalid {			
+				.trim {
+					background-position: -72px 0;
+			  	}
+			}
+		}		
+		
+		.pane {	
+			background-color: #fafbfb;
+			border: 6px solid #ebedf0;
+			border-left-width: 2px;
+			border-right-width: 2px;
+			border-top: 3px dotted #ebedf0;
+			margin-bottom: 20px;
+			padding: 20px 17px 60px;		
+		}
+		&.active {
+		
+		}
+		
+		&.valid {
+			.status {
+				display: block;
+			}	
+		}
+		
+		&.invalid {
+			.status {
+				display: block;
+			}
+		}
+		.nextPane, .submit {
+			position: absolute;
+			bottom: 16px;
+			right: 12px;
+		}
+
+		.status {
+			position: absolute;
+			width: 100%;
+			left: 0;
+			bottom: 0;
+			padding: 10px 0;
+			display: none;
+			
+			// This should be handled with :before if IE7 disappears.
+			.trim {
+		  		height: 56px;
+		  		width: 40px;
+		  		bottom: 6px;
+		  		left: 20px;
+		  	}
+		}		
+	}
+	
+	&.skin2 {
+		.trigger {
+			padding: 8px 12px 8px 40px;
+			color: #003300;
+			@include border-radius(5px);
+			position: relative;
+			font: bold 15px / 1.2 "Helvetica Neue", "Helvetica", "Arial", "Verdana", sans-serif #000;
+			
+			// Speach bubbles
+			.bubble {
+				width: 16px;
+				height: 16px;
+				left: 8px;
+				margin-top: -8px;
+				background: url("http://www.greenpeace.org/finland/Global/finland/nui/images/accordion/nuiAccordion-trim.png") no-repeat left -24px transparent;		
+			}
+			.trim {
+				height: 16px;
+				width: 16px;
+				margin-top: -8px;
+				background-position: -16px -24px;
+				left: 12px;
+			}
+			
+			&.active {
+				background-color: #6e7f8b;
+				color: #edf3ff;
+				
+				.trim {
+					background-position: -16px -24px;
+				}				
+			}
+		}
+		.bubble {
+			position: absolute;
+			width: 72px;
+			height: 29px;
+			right: 25px;
+			top: -29px;
+			background: url("http://www.greenpeace.org/finland/Global/finland/nui/images/accordion/speachbubble.png") no-repeat left top;				
+		}
+		
+		
+		.pane {
+				padding: 18px 18px 45px;
+				margin: 19px 0 15px;
+				border: 5px solid #9ca3b1;
+				color: #4d535f;
+				overflow: visible;
+				@include border-radius(10px);
+				
+			.close {
+				position: absolute;
+				bottom: 8px;
+				right: 8px;
+			}
+			
+			.trigger {
+				background-color: transparent;
+				color: #9ca3b1;
+				font-weight: bold;
+				padding: 8px 18px 5px 20px;
+				
+				&.active {
+					background-color: #baccd9;
+					color: #282d38;
+					@include border-bottom-radius(0);
+					margin-bottom: 0;
+					
+					.trim {
+											
+					}
+					
+				}
+			}
+			.pane {
+				@include box-shadow(rgba(0,0,0,0.09), 0px, 0px, 0px);
+				background-color: #baccd9;
+				@include border-top-radius(0);
+				@include border-bottom-radius(5px);
+				margin-top: 0px;
+				border-width: 0px;
+			}
+		}
+	}	
+}
+
+.nuiBasicList {
+	.nuiAccordion.t1.skin1 {
+		.pane {
+			@include box-shadow(rgba(0,0,0,0.09), 0px, 0px, 0px);
+			@include border-top-radius(0);
+			background-color: #fafbfb;
+			border: 6px solid #ebedf0;
+			border-left-width: 2px;
+			border-right-width: 2px;
+			border-top: 3px dotted #ebedf0;
+			margin-bottom: 20px;
+			padding: 20px 17px 60px;
+			font-size: 100%;
+		}
+	
+	
+	}
+}

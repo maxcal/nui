@@ -1,0 +1,28 @@
+// Hcard V 1.0
+
+.nuiContacts {
+	
+	padding: 0;
+	margin: 1.1em 4em;
+	
+	li, dd {
+		list-style-type: none;
+	}
+
+}
+
+.vcard {
+	padding: 1.7em 0 1.5em;
+	margin: 0;
+	border-bottom: 1px dashed #cccccc;
+	
+	.fn {
+		font-weight: bold;
+		padding-bottom: 0.3em;
+	}
+	
+	.email a {
+		color: #66CC00;
+	}
+	
+}

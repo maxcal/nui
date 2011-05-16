@@ -1,0 +1,69 @@
+@import "compass";
+@import "compass/css3/box-shadow";
+
+.letter{
+	background-color: #041d32;
+}
+
+.letter #wrapper #main {
+	background: url("http://www.greenpeace.org/finland/Global/finland/nui/images/petion/mr-petition-bg.jpg") no-repeat scroll right top #00284b;
+	padding: 12px 10px 0 10px !important;	
+	width: 940px;
+	
+	@include border-bottom-left-radius(25px); 
+	@include border-bottom-right-radius(25px); 
+	
+}
+
+.letter .aside {
+	margin-top: 198px;
+}
+
+
+.letter .nuiFooter.footer-holder{
+	margin-top: 10px;
+}
+
+.letter .bar {
+
+	color: #666666;
+	
+	p{
+		margin-bottom: 3px;
+	}
+	
+	
+}
+
+.letter .progress, .progressbar{
+	margin: 0 0 25px;
+	position: relative;
+}
+
+.letter .bar .holder .frame{
+	width: auto;
+	padding: 12px 28px 38px;
+}
+
+
+
+
+
+
+
+.letter{
+	
+	.action{
+	
+		 background: url("http://www.greenpeace.org/finland/Global/finland/nui/images/openspace/1px60procent.png") repeat scroll 0 0 transparent;
+		 margin-top: 8px;
+		 @include border-radius(18px); 
+		 
+		.c, .b, .t{
+			background-image: none;
+		}
+
+	
+	
+	} 
+}

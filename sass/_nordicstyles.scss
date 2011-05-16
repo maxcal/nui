@@ -1,0 +1,85 @@
+// Show share box in articles
+	.article #content .share-box {
+		display: block;
+}
+
+#content {
+	// Fix margins for Letters that extend above x height. 
+	.img-and-text h3, .tab .news-content h3 {
+		margin: 0 0 0;
+		vertical-align: top;
+	
+	}
+	
+	// Remove top sharebox
+	.share-box {
+		display: none;
+	}
+	
+	
+	
+	// Show bottom sharing box
+	.inverted {
+		.share-box {
+			display: block;
+		}
+	}
+	// Fix dispay of news content
+	.tab {
+		.news-content {
+			display: table-cell;
+			// background-color: blue;
+			overflow: visible;
+			padding-right: 15px;
+		}
+		.news .img-holder {
+			min-width: 130px;
+			background-color: #d4dae8;
+			margin-right: 20px;
+			// IE6 & 7 Hack
+			 *max-width: 140px;
+			
+			img {
+				margin: 0 auto;
+			}
+		
+		}
+		.news {
+			.teaser-top, .teaser-bottom {
+				background: none no-repeat transparent !important;
+				background-image: none;
+			}
+			
+			&.none-img .news-content {
+				padding-left: 160px;
+			}
+		
+		}
+		
+	}
+	
+}
+// Remove content type in sidebar.
+/*
+#sidebar .listings .contenttype {
+	display: none;
+
+}
+*/
+
+// Background color for image holder on media hub
+.marticle #content .tab .news .img-holder{
+	background-color: #1d222d;
+}
+	
+// Remove "The Latest updates"
+.tabs-holder h3 {
+		display: none;
+	
+}
+
+// Reset hack so that post titles are displayed.
+.tab h3 {
+	display: block;
+}
+

@@ -1,0 +1,53 @@
+.nuiTabs {
+	&.t1 {
+		.navTabs {
+		font-family: "Helvetica Neue", "Helvetica", "Arial", "Verdana", sans-serif;
+		margin: 0;
+		padding: 0;
+		position: relative;
+		line-height: 35px;
+		border-bottom: 3px solid #66CC00;
+		
+		a {
+			text-decoration: none;
+			color: #666666;
+			
+			&:hover {
+				text-decoration: none;
+				}
+		}
+		
+			.trigger {
+				
+				float: left;
+				display: block;
+				margin-right: 5px;
+				position: relative;
+				background-color: #EBEDF0;
+				
+				padding: 4px 17px 3px;
+				margin-top: 5px;
+				font-size: 14px;
+				font-weight: bold;
+				@include border-top-radius(18px);
+				
+				&:hover {
+					color: #FFF;
+				}
+				
+				&:hover a {
+					color: #003300;
+				}
+				
+				
+				&.active {					
+					background-color: #66cc00;
+					color: #fff;
+					bottom: 0;
+					font-weight: bold;
+					
+				}			
+			}			
+		}
+	}
+}

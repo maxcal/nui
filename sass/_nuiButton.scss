@@ -1,0 +1,48 @@
+/* ============= nuiButton ====================================================  */
+
+a.nuiButton, input[type=button].nuiButton, input[type=submit].nuiButton {	
+	font-family: "Helvetica Neue", helvetica,arial,sans-serif;
+	@include inline-block;
+	text-decoration: none;
+
+	&:hover{
+		text-decoration: none;
+	}
+	
+	&.t1 {
+		padding: 5px 10px;
+		font-size: 14px;
+		@include border-radius(3px, 3px);
+	}
+	
+	&.t2 {
+		padding: 3px 6px;
+		font-size: 12px;
+		@include border-radius(3px, 3px);
+	}
+	
+	&.skin1 {
+		background: url("http://www.greenpeace.org/finland/Global/finland/nui/images/buttons/nuiButtons_skin1_orange.gif") repeat-x  #ff6b08;
+		color: #FFF;
+		font-weight: bold;
+		border: 1px solid #b54f0b;		
+	}
+	
+	&.skin2 {
+		background: url("http://www.greenpeace.org/finland/Global/finland/nui/images/buttons/nuiButtons_skin2_darkgrey.gif") repeat-x  #373e49;
+		color: #FFF;
+		font-weight: bold;
+		border: 1px solid #272c37;	
+	}
+	&.skin3 {
+		background: url("http://www.greenpeace.org/finland/Global/finland/nui/images/buttons/nuiButtons_skin3_light.gif") repeat-x  #d4dae8;
+		color: #383e49;
+		font-weight: bold;
+		border: 1px solid #9ca3b1;	
+	}
+	
+	&.nextPane {
+		float: right;
+	}
+	
+}

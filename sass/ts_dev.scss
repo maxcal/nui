@@ -1,0 +1,27 @@
+// @ NAMESPACE NuiType
+// Resets to give some reasonable typeography.
+
+.nuiType{
+
+	dl, ul, ol, dd, li {
+		margin: 0;
+		padding: 0;
+	
+	}
+	
+	dl, ul ,ol {
+		a {
+			color: #66CC00;
+		}
+	}
+	
+	dt {
+		font-size: 1.2em;
+		margin-bottom: 0.7em;
+	}
+	
+	dd {
+		margin-bottom: 0.5em;
+	}
+}
+
