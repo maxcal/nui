@@ -278,7 +278,7 @@ A css / html visual item for use in the big old openspace.
         // Create the container and skin it.
         var $o, $a, $a_omnilink;
 
-        $o = $('<div class="nuiOpenspace" style="background-image: url(' + this.val_image + ')"></div>')
+        $o = $('<div class="nuiOpenspace" style="background-image:url(' + this.val_image + ')"></div>')
 
         .addClass(this.val_template).addClass(this.val_skin);
 
