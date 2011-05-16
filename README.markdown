@@ -6,4 +6,4 @@ Nui is a collection of CSS and Javascript modules for P3. Its made to simplefy f
 
 See the WIKI section for more information.
 
-Are you looking for the [[nuiBuilder|http://maxcal.github.com/nui/]] ?
+Are you looking for the nuiBuilder http://maxcal.github.com/nui/ ?
