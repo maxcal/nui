@@ -26,10 +26,8 @@ jQuery(document).ready(function($) {
 			   if (form_fields.hasOwnProperty(key)) {
 			     ff = form_fields[key];
 			     $ff = $(ff.id);  
-			     //console.info($ff);
-			     //console.info($ff.length);
 			     
-			     if ($ff.length < 0){
+			     if ($ff.length > 0){
 			     	 ff_tagName = $ff[0].tagName;			     			     
 				     
 				     if (ff_tagName === "INPUT"){			     	
@@ -39,9 +37,6 @@ jQuery(document).ready(function($) {
 				     else if (ff_tagName === "SELECT"){		     	
 				     	ff.value = $(ff.id).find(":selected").text();
 				     }
-				     
-				     console.info(ff.value)    
-
 			     }
 			   }
 			}	
@@ -90,8 +85,6 @@ jQuery(document).ready(function($) {
 			function add_hander($obj){
 				$obj.change(function(){
 						update_body();		
-						
-						console.log('handler trigged');	
 				});
 			}
 						
@@ -107,8 +100,6 @@ jQuery(document).ready(function($) {
 			this.initialize();
 		}				
 	}
-
-	add_petition_signature();
 
 });
 
