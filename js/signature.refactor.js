@@ -15,9 +15,7 @@ jQuery(document).ready(function($) {
 				"id" : "#ctl00_cphContentArea_Action1_txtCellPhone"
 			}
 
-		};
-		
-		var sig_cache = [];
+		};		
 		
 		// Get the field values from the form and add them to form_fields object
 		function get_fields(){	
@@ -27,16 +25,15 @@ jQuery(document).ready(function($) {
 			for (var key in form_fields) {
 			   if (form_fields.hasOwnProperty(key)) {
 			     ff = form_fields[key];
-			     $ff = $(field.id);  
+			     $ff = $(ff.id);  
 			     
-			     console.info($ff);
-			     
-			     field_tagName = $ff[0].tagName;			     			     
+			     ff_tagName = $ff[0].tagName;			     			     
 			     
 			     if (ff_tagName === "INPUT"){			     	
 			     	ff.value = $(ff.id).val();			     	
 			     }
-			     			     else if (ff_tagName === "SELECT"){		     	
+			     
+			     else if (ff_tagName === "SELECT"){		     	
 			     	ff.value = $(ff.id).find(":selected").text();
 			     }    
 			   }
@@ -45,8 +42,10 @@ jQuery(document).ready(function($) {
 		
 		// add the signature to the textarea
 		function update_body(){
-			//get_fields();
-			var sig, $email_body, email_content, fn_prev;
+			get_fields();
+			var sig, $email_body, email_content, fn_prev, splitter;
+			
+			splitter = "\n - - - - - ";
 			
 			sig = [];
 			sig[0] = form_fields.first_name.value;
@@ -55,26 +54,26 @@ jQuery(document).ready(function($) {
 			
 			$email_body = $("#ctl00_cphContentArea_Action1_txtBody");
 			email_content = $email_body.val();			
+			
 			// Split content to remove old signature.
+			email_content = email_content.split( splitter )[0];
 			
+			// If firstname / lastname
+			if (sig[0] && sig[1]){
+				// Add stupid splitter
+				email_content = email_content + splitter;
 			
-			if (sig_cache.length > 0){
-				fn_prev = "\n" + sig_cache[sig_cache.length-1];				
-				email_content = email_content.split( fn_prev )[0];				
-			}			
+				// Add firstname / lastname
+				email_content = email_content + "\n" + sig[0] + " " + sig[1];
+				
+				// Add country
+				if (sig[2]){
+					email_content = email_content + ",\n" + sig[2];
+				}
+				
+				$email_body.val(email_content);	
 			
-			sig_cache.push(sig[0]);
-			
-			// Add firstname / lastname
-			email_content = email_content + "\n" + sig[0] + " " + sig[1];
-			
-			// Add country
-			if (sig[2] !== 'undefined'){
-				email_content = email_content + "\n" + sig[2];
 			}
-						
-			$email_body.val(email_content);				
-		
 		}	
 		
 		this.initialize = function(){
@@ -91,10 +90,6 @@ jQuery(document).ready(function($) {
 				}				
 			}			
 		}
-		
-		
-		
-		
 
 		this.initialize();		
 	}
