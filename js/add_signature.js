@@ -20,7 +20,7 @@ jQuery(document).ready(function($) {
 		// Get the field values from the form and add them to form_fields object
 		function get_fields(){
 			
-			var ff, $ff, field_tagName;
+			var ff, $ff, ff_tagName;
 		
 			for (var key in form_fields) {
 			   if (form_fields.hasOwnProperty(key)) {
@@ -43,14 +43,10 @@ jQuery(document).ready(function($) {
 		// add the signature to the textarea
 		function update_body(){
 			get_fields();
-			var sig, $email_body, email_content, fn_prev, splitter;
+			var $email_body, email_content, splitter;
 			
 			splitter = "\n - - - - - ";
-			
-			sig = [];
-			sig[0] = form_fields.first_name.value;
-			sig[1] = form_fields.last_name.value;
-			sig[2] = form_fields.country.value;				
+					
 			
 			$email_body = $("#ctl00_cphContentArea_Action1_txtBody");
 			email_content = $email_body.val();			
@@ -59,41 +55,48 @@ jQuery(document).ready(function($) {
 			email_content = email_content.split( splitter )[0];
 			
 			// If firstname / lastname
-			if (sig[0] && sig[1]){
+			if (form_fields.first_name.value){
 				// Add stupid splitter
 				email_content = email_content + splitter;
 			
 				// Add firstname / lastname
-				email_content = email_content + "\n" + sig[0] + " " + sig[1];
+				email_content = email_content + "\n" + form_fields.first_name.value;
 				
-				// Add country
-				if (sig[2]){
-					email_content = email_content + ",\n" + sig[2];
+				if (form_fields.last_name.value){
+					email_content = email_content + " " + form_fields.last_name.value;
 				}
 				
-				$email_body.val(email_content);	
-			
+				// Add country
+				if (form_fields.country.value){
+					email_content = email_content + ",\n" + form_fields.country.value;
+				}
+				
+				$email_body.val(email_content);				
 			}
 		}	
 		
 		this.initialize = function(){
-			
-			// Update once to catch logged in users
+		
+			// Update once to catch logged in users - such as webbies.
 			update_body();
+			
+			function add_hander($obj){
+				$obj.change(function(){
+						update_body();			
+				});
+			}
 						
 			// Bind event handlers to the form fields
 			for (var key in form_fields){							
 				if (form_fields.hasOwnProperty(key)) {
-					$(form_fields[key].id).change(function(){
-						update_body();			
-					});
+					add_hander($(form_fields[key].id));	
 				}				
-			}			
-		}
+			}				
+		};
+		
 		if ($('body').hasClass('letter')){
 			this.initialize();
-		}
-				
+		}				
 	}
 
 	add_petition_signature();
