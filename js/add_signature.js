@@ -90,9 +90,10 @@ jQuery(document).ready(function($) {
 				}				
 			}			
 		}
-		if $('body').hasClass('letter'){
+		if ($('body').hasClass('letter')){
 			this.initialize();
-		}				
+		}
+				
 	}
 
 	add_petition_signature();
