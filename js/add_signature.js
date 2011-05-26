@@ -26,16 +26,23 @@ jQuery(document).ready(function($) {
 			   if (form_fields.hasOwnProperty(key)) {
 			     ff = form_fields[key];
 			     $ff = $(ff.id);  
+			     //console.info($ff);
+			     //console.info($ff.length);
 			     
-			     ff_tagName = $ff[0].tagName;			     			     
-			     
-			     if (ff_tagName === "INPUT"){			     	
-			     	ff.value = $(ff.id).val();			     	
+			     if ($ff.length < 0){
+			     	 ff_tagName = $ff[0].tagName;			     			     
+				     
+				     if (ff_tagName === "INPUT"){			     	
+				     	ff.value = $(ff.id).val();			     	
+				     }
+				     
+				     else if (ff_tagName === "SELECT"){		     	
+				     	ff.value = $(ff.id).find(":selected").text();
+				     }
+				     
+				     console.info(ff.value)    
+
 			     }
-			     
-			     else if (ff_tagName === "SELECT"){		     	
-			     	ff.value = $(ff.id).find(":selected").text();
-			     }    
 			   }
 			}	
 		}		
@@ -82,7 +89,9 @@ jQuery(document).ready(function($) {
 			
 			function add_hander($obj){
 				$obj.change(function(){
-						update_body();			
+						update_body();		
+						
+						console.log('handler trigged');	
 				});
 			}
 						

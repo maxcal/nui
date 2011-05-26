@@ -270,9 +270,6 @@ function NuiCookie() {
 
 nui.cookie = new NuiCookie();
 
-
-/* ============= Remove Greenpeace from site title================================ */
-// jQuery Cookie plugin
 /* ============= Nui_PopUp ================================
 
 NuiPopup is a Jquery / CSS module in the NUI family. Its purpose is to display messages to the user in a "modal" dialog. It is nonblocking and can be used to display any content.
@@ -471,7 +468,6 @@ $obj = a jQuery selector or a jQuery object.
     /* Set google analytics tracking */
     this.setTracker = function() {};
 }
-
 
 /* ============= Safe-fire Modules @ Doc ready ================================ */
 $(document).ready(function() {
