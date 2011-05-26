@@ -234,7 +234,7 @@ A css / html visual item for use in the big old openspace.
 
         base: {
             template: {
-                properties: ['Pane on left', 'Pane on Right', 'Pane above', 'Pane Below', 'Pane in Center']
+                properties: ['Pane on left', 'Pane on Right', 'Pane above', 'Pane Below', 'Pane in Center', 'Minimal Left', 'Minimal Right']
             },
             skin: {
                 properties: ['Dark Opaque', 'Light Opaque', 'Solid Dark', 'Solid Light', 'Outlined (experimental!!)', '90% white']

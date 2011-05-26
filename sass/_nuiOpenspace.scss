@@ -172,6 +172,32 @@
 		}
 	}
 	
+	// Minimalistic heading 
+	&.t6, &.t7 {
+		.pane {
+			width: 400px;
+			padding: 10px;
+			height: auto;
+			position: relative;
+			top: 40px;
+		}
+	
+	}
+	
+	// Minimalistic heading - on right
+	&.t6 {
+		.pane {
+			padding-left: 40px;
+		}
+	}
+	
+	&.t7 {
+		.pane {
+			float: right;
+		}
+	}
+	
+	// Minimalistic heading - on left
 	
 /* ------------ Skins ------------------------------------------- */
 
