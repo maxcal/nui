@@ -27,8 +27,6 @@ jQuery(document).ready(function($) {
 			     ff = form_fields[key];
 			     $ff = $(ff.id);  
 			     
-			     console.info(ff, $ff);
-			     
 			     if ($ff.length > 0){
 			     	 ff_tagName = $ff[0].tagName;			     			     
 				     
