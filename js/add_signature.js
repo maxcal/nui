@@ -102,6 +102,7 @@ jQuery(document).ready(function($) {
 			this.initialize();
 		}				
 	}
-
+	
+	add_petition_signature();
 });
 
