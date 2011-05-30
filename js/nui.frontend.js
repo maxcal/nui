@@ -574,8 +574,8 @@ function Nui_signature() {
 				}				
 			}	
 		}			
-	}	
-};	
+	};	
+}	
 
 nui.sign_petition = new Nui_signature();
 
