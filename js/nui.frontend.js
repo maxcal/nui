@@ -222,29 +222,7 @@ Utitily to set and read cookies.
 
 function NuiCookie() {
 
-    this.create = function(name, value, days, path) {
-
-
-        var expires, date, path_to;
-        
-        path_to = "path=/";
-
-        if (days) {
-            date = new Date();
-            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-            expires = "; expires=" + date.toGMTString();
-        }
-
-        else {
-            expires = "";
-        }
-        
-        if (path){
-        	path_to = path_to + path;
-        }
-
-        document.cookie = name + "=" + value + expires + ";"+ path_to;
-    };
+  	var self = this;
 
     this.read = function(name) {
         var nameEQ = name + "=",
@@ -266,9 +244,62 @@ function NuiCookie() {
 
         return null;
     };
+    
+    this.create = function(name, value, days, path) {
+
+
+        var expires, date, path_to, new_cookie;
+        
+        path_to = "path=/";
+
+        if (days) {
+            date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toGMTString();
+        }
+
+        else {
+            expires = "";
+        }
+        
+        if (path){
+        	path_to = path_to + path;
+        }
+
+        document.cookie = name + "=" + value + expires + ";"+ path_to;
+        
+        new_cookie = self.read(name);
+
+        return self.read(name);
+        
+    };
+    
+    // Expires cookie
+    this.destroy = function(name, path) {
+    	if (self.read(name)){
+    		self.create(name, "", -1, path);     	   	
+    		return true;
+    	}
+    	else {
+    		return false;
+    	}	
+    };
+    
+    this.update = function(name, value, days, path) {
+    	var x;
+    	if (self.read(name)){
+    		x = self.create(name, value, days, path);     	   	
+    		return x;
+    	}
+    	else {
+    		return false;
+    	}	
+    };
 }
 
 nui.cookie = new NuiCookie();
+
+// nui.cookie.create('foo', 'bar', 14,'norway');
 
 /* ============= Nui_PopUp ================================
 
