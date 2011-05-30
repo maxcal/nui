@@ -476,8 +476,7 @@ $obj = a jQuery selector or a jQuery object.
 
 */
 
-
-nui.sign_petition = function() {
+function Nui_signature() {
 
 	var form_fields = {
 		"first_name" : {
@@ -559,10 +558,9 @@ nui.sign_petition = function() {
 			update_body();		
 		});
 	}
-};	
 	
-	nui.openspace.initialize = function(){
-
+	this.initialize = function(){
+		
 		if ($('body').hasClass('letter')){
 			
 			// Update once to catch logged in users - such as webbies.
@@ -575,8 +573,11 @@ nui.sign_petition = function() {
 					add_hander($(form_fields[key].id));	
 				}				
 			}	
-		}
-	};
+		}			
+	}	
+};	
+
+nui.sign_petition = new Nui_signature();
 
 
 
