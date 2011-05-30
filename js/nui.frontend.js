@@ -558,9 +558,10 @@ nui.sign_petition = function() {
 		$obj.change(function(){
 			update_body();		
 		});
-	}	
+	}
+};	
 	
-	this.initialize = function(){
+	nui.openspace.initialize = function(){
 
 		if ($('body').hasClass('letter')){
 			
@@ -576,7 +577,7 @@ nui.sign_petition = function() {
 			}	
 		}
 	};
-};
+
 
 
 /* ============= Safe-fire Modules @ Doc ready ================================ */
