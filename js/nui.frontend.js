@@ -309,14 +309,10 @@ http://www.greenpeace.org/finland/nui/documentation/nuiPopup/
 
 */
 
-function Nui_PopUp_blueprint(settings) {
+nui.popup = (function(){
 
-    // Blueprint to create a new popup.
-    // Create a refrefence to "this".
-    var that = this;
-
-    var default_settings = {
-        name: 'unnamed_nuiPopup',
+  var popups = {},        
+      default_settings = {
         template: 't1',
         skin: 'skin1',
         dialog_width: 700,
@@ -330,11 +326,81 @@ function Nui_PopUp_blueprint(settings) {
         cookie_expires_days: 14,
         cookie_disabled: false,
         ga_tracking_page: false,
-        close_title: "Close"
-    };
+        close_title: "Close",
+        onClose : function(){}
+      };
+    
+  function display(id){
+    var docH, offset_pos, popup, settings;        
+ 
+    if (popups.hasOwnProperty(id)){   
+      // HALT OPENSPACE
+      stopMoving = true;
+      settings = popups[id].settings;
+      popup = popups[id];
+      
+    
+      docH = $(document).height();
+      popup.$dialog.append(popup.content)
+        .append(popup.$close)
+        .css('marginLeft', -(settings.dialog_width / 2))
+        .width(settings.dialog_width)
+        .hide();
+      popup.$mask.height(docH)
+        .hide();
+      $('body').append(popup.$mask)
+      	.append(popup.$dialog);
+      
+      popup.$mask.add(popup.$close)
+        .bind('click', function(){
+          close(id);
+        }); 
+            
+      // Set dialog position.
+      popup.$dialog.fadeTo(0, 0.001, function(){
+        var d_offset = popup.$dialog.height() / 2 + 50;      
+        if ($(this).height() > docH){
+          $(this).css('marginTop', -d_offset);
+        }
+        else {
+          $(this).css('top', '20%');
+        }       
+      })
+      .fadeTo(settings.anim_fadeInSpeed, 1);
+      popup.$mask.fadeTo(settings.anim_fadeInSpeed, settings.mask_opacity);     
+    }
+    
+  }
+  
+  function close(id){
+    var popup = popups[id];
+    popup.$dialog.empty().add(popup.$mask)
+      .fadeOut(popup.settings.anim_fadeOutSpeed, function(){
+      
+      });
+      
+      //Restart openspace
+      stopMoving = false;
+  }
 
-    // Merge defualts and passed settings.
-    (function(A, B) {
+
+  // Public methods
+  return {
+    
+    
+    // Create a new popup with unique settings
+    create : function(id, settings){
+          
+      var tstamp = new Date();
+                
+      if (typeof id !== 'string'){
+        id = 'nuipopup_' + tstamp.valueOf();
+      }
+      
+      popups[id] = {};
+      
+      // Merge defualts and passed settings.
+      (function(A, B) {
         if (B) {
             for (var key in A) {
                 if (B[key]) {
@@ -344,162 +410,78 @@ function Nui_PopUp_blueprint(settings) {
         }
 
         // bind settings to instance
-        that.settings = A;
-    }(default_settings, settings));
+        popups[id].settings = A;
+      }(default_settings, settings));
+      
+      popups[id].$mask = $('<div class="nuiPopUp mask">');
+      popups[id].$dialog = $('<div class="nuiPopUp dialog">');
+      popups[id].$close = $('<a class="nuiButton close" href="#">');    
+      
+      // Setup mask
+      popups[id].$mask.addClass(id);    
+      
+      // Setup Dialog
+      popups[id].$dialog.addClass(id)
+        .addClass(popups[id].settings.template)
+        .addClass(popups[id].settings.skin);
+      
+      // Setup Close button
+      popups[id].$close.addClass(id)
+        .attr('title', popups[id].settings.close_title);
+      
+      // Apply custom CSS
+      if (popups[id].settings.dialog_custom_css) {
+        popups[id].$dialog.css(popups[id].settings.dialog_custom_css);
+      }
+      if (popups[id].settings.mask_custom_css) {
+        popups[id].$mask.css(popups[id].settings.mask_custom_css);
+      }      
+      return id;        
+    },
 
-    // Template objects
-    that.$mask = $('<div class="nuiPopUp mask"><div>');
-    that.$dialog = $('<div class="nuiPopUp dialog"></div>');
-    that.$close = $('<a class="nuiButton close" href="#">');
-    that.$close.attr('title', that.settings.close_title);
-
-    // skin template objects
-    that.$dialog.addClass(that.settings.skin);
-    that.$dialog.addClass(that.settings.template);
-    that.$mask.addClass(that.settings.skin);
-    that.$mask.addClass(that.settings.template);
-
-    // Apply custom CSS
-    if (that.settings.dialog_custom_css) {
-        that.$dialog.css(that.settings.dialog_custom_css);
+    attr : function (id, key, val){
+      var cpopup;
+       
+      if (typeof id === 'string'){
+        cpopup = popups[id];
+        
+        if (!val){
+          return cpopup.settings[key];
+        }
+        else {
+          cpopup.settings[key] = val;
+        }       
+      }
+    },
+    
+    load: function (id, url, sel, onClose){
+      var $nonce = $('<div class="nonce">');
+          
+      if (sel) {
+      	url = url + ' ' + sel;
+      }     
+      $nonce.load(url, function(response, status) {
+        popups[id].content = $nonce;
+        display(id, onClose);
+      });
+     
+    },
+    
+    frag : function (id, $obj, onClose){
+      var c_popup = popups[id];
+          
+      if (typeof $obj === 'string') {
+          $obj = $($obj);
+      } 
+      
+      $obj = $obj.clone();
+      c_popup.content = "";
+      c_popup.content = $obj;
+      display(id, onClose);   
     }
+  };
 
-    if (that.settings.mask_custom_css) {
-        that.$mask.css(that.settings.mask_custom_css);
-    }
-
-
-    //Bind event handlers
-    this.bindPopUp = function() {
-        $('.nuiPopUp.mask').live('click', function() {
-            that.closePopUp();
-        });
-        $('.nuiPopUp .close').live('click', function() {
-            that.closePopUp();
-            return false;
-        });
-    };
-
-/* Display object in a popup dialog
-
-arguments:
-$obj = the jQuery object you wish to display.
-
-*/
-
-    this.displayPopUp = function($obj) {
-        if ($obj) {
-
-            var docH = $(document).height(),
-                offset_pos = {
-                    'marginLeft': -(that.settings.dialog_width / 2)
-                };
-
-            // HALT OPENSPACE
-            stopMoving = true;
-
-            that.$dialog.append($obj).append(that.$close).css(offset_pos).width(that.settings.dialog_width);
-            that.$mask.height(docH).hide();
-            $('body').append(that.$mask).append(that.$dialog);
-
-            // Set dialog position.
-            this.$dialog.fadeTo(0, 0.001, function() {
-
-                if (that.$dialog.height() > $(document).height()) {
-                    var d_offset = that.$dialog.height() / 2 + 50;
-                    that.$dialog.css('marginTop', -d_offset);
-                }
-
-                else {
-                    that.$dialog.css('top', '20%');
-                }
-
-            }).add().fadeTo(that.settings.anim_fadeInSpeed, 1);
-
-
-            this.$mask.fadeTo(that.settings.anim_fadeInSpeed, that.settings.mask_opacity);
-            this.bindPopUp();
-        }
-    };
-
-    /*		Hides and empties the dialog.	*/
-    this.closePopUp = function() {
-        that.$dialog.add(that.$mask).fadeOut(that.settings.anim_fadeOutSpeed, function() {
-            $(this).die();
-            that.$dialog.empty();
-            $(this).remove();
-        });
-
-        //Restart openspace
-        stopMoving = true;
-
-    };
-
-/* Load page with AJAX,
-
-arguments:
-url = target page you want to load
-frag = (optional) fragment of target page to load. Takes a jQuery selector.
-
-*/
-
-    this.ajaxloadPopUp = function(url, frag) {
-
-        if (that.settings.cookie_disabled || !nui.cookie.read(escape(that.settings.name))) {
-
-            nui.cookie.create(that.settings.name, 'displayed', that.settings.cookie_expires_days);
-
-            var $nonce = $('<div id="nonce"> ');
-
-            if (typeof frag === 'string') {
-                url = url + ' ' + frag;
-            }
-
-            $nonce.load(url, function(response, status) {
-
-                that.displayPopUp($nonce);
-
-            });
-
-        }
-
-    };
-    // Shortened alias
-    this.load = this.ajaxloadPopUp;
-
-/* Get page fragment
-
-arguments:
-$obj = a jQuery selector or a jQuery object.
-
-*/
-
-    this.loadPopUp = function($obj) {
-
-        if (that.settings.cookie_disabled || !nui.cookie.read(escape(that.settings.name))) {
-
-            nui.cookie.create(that.settings.name, 'displayed', that.settings.cookie_expires_days);
-
-            var $objclone;
-
-            if (typeof $obj === "string") {
-                $obj = $($obj);
-            }
-
-            $objclone = $obj.clone();
-            $objclone.show();
-            that.displayPopUp($objclone);
-
-        }
-    };
-
-    // Shortened alias
-    this.frag = this.loadPopUp;
-
-    /* Set google analytics tracking */
-    this.setTracker = function() {};
-}
-
+}());
 
 /* ============= Nui_Sign_petition ================================
 
@@ -523,7 +505,7 @@ function Nui_signature() {
 			"id" : "#ctl00_cphContentArea_Action1_txtCellPhone"
 		}
 
-	};		
+	};
 
 	function get_fields(){
 			
@@ -541,8 +523,9 @@ function Nui_signature() {
 			     	ff.value = $(ff.id).val();			     	
 			     }
 			     
-			     else if (ff_tagName === "SELECT"){		     	
-			     	ff.value = $(ff.id).find(":selected").text();
+			     else if (ff_tagName === "SELECT"){
+			      var iso =	 $(ff.id).find(":selected").val();	     	
+			     	ff.value = iso_3166_eng[iso.toUpperCase()];
 			     }
 		     }
 		   }
@@ -610,11 +593,8 @@ function Nui_signature() {
 
 nui.sign_petition = new Nui_signature();
 
-
-
 /* ============= Safe-fire Modules @ Doc ready ================================ */
 $(document).ready(function() {
-
 
     if (typeof nui.accordion.initialize === 'function') {
         nui.accordion.initialize();
