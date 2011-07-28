@@ -11,6 +11,16 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
 </head>
 
+	<style>
+		#sample_content {
+			display: none;
+		}
+		body, html {
+			padding: 0;
+			margin: 0;
+		}
+	</style>
+
 <body id="home">
 
 	<h1>NUI popup</h1>
@@ -31,7 +41,8 @@
 	jQuery(document).ready(function($) {
 	  var pop = nui.popup.create('foo_pop', {
 	    cookie_disabled: true,
-	    skin: 'skin2'
+	    skin: 'skin1',
+	    template: 't1',
 		});
 		
 		$('#ajaxload').click(function(){
@@ -40,8 +51,7 @@
 		
 		$('#fragload').click(function(){
 			nui.popup.frag(pop, $('#sample_content'));
-		});
-	
+		});	
 	});
 	
 	</script>

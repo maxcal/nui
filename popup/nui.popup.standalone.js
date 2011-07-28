@@ -32,6 +32,7 @@ nui.popup = (function(){
       
     
       docH = $(document).height();
+      popup.content.show();
       popup.$dialog.append(popup.content)
         .append(popup.$close)
         .css('marginLeft', -(settings.dialog_width / 2))
@@ -65,10 +66,14 @@ nui.popup = (function(){
   
   function close(id){
     var popup = popups[id];
-    popup.$dialog.empty().add(popup.$mask)
-      .fadeOut(popup.settings.anim_fadeOutSpeed, function(){
-      
-      });
+    //popup.$dialog.empty().add(popup.$mask).animate({}, 100, function(){});
+    
+    popup.$dialog.animate({
+    	opacity: 0
+    }, popup.settings.anim_fadeOutSpeed, function(){
+    	popup.$dialog.empty();
+    	popup.$mask.fadeOut(300);    
+    });
       
       //Restart openspace
       stopMoving = false;

@@ -5,214 +5,129 @@ PLEASE USE nui.frontend.min.js for live sites!
 Constructor for the nui namespace. this avoids clobbering (and getting clobbered by) global values.
 */
 
-function Nui_contruct() {
+var nui = function(){ 
+  return {  
+  };
+};
 
-/* Module Constructor
-
-Here you can add functions which are shared by all components
-to add a new component use:
-
-New operator:
-nui.myModule = new nui.ModuleBuilder();
-
-Prototype:
-nui.prototype.myModule = function(){......}
-
-*/
-
-    this.ModuleBuilder = function() {
-        this.startUp = function() {};
-    };
-
-    /* Utilities */
-
-/* Convert array to literal
-http://snook.ca/archives/javascript/testing_for_a_v
-
-use:
-if( name in oc(['bobby', 'sue','smith']) ) { ... }
-*/
-    this.oc = function(a) {
-        var o = {};
-        for (var i = 0; i < a.length; i++) {
-            o[a[i]] = '';
-        }
-        return o;
-    };
-}
-
-// Create nui object from constructor.
-nui = new Nui_contruct();
 
 /* ============= nuiAccordion ================================ */
 
-nui.accordion = new nui.ModuleBuilder();
+nui.accordion = (function(){  
+  function hidePane(obj){
+    obj.trigger.removeClass('active');
+    obj.pane.removeClass('active');
+    obj.pane.hide();    
+  }
+  
+  function showPane(obj){
+    obj.pane.addClass('active');
+    obj.trigger.addClass('active');
+    obj.pane.hide();    
+    obj.pane.slideDown(300);
+  }
 
-nui.accordion.initialize = function() {
-    var ac = $('.nuiAccordion');
-    ac.each(function(index) {
+  function changePane(target, old){ 
+    hidePane(old);
+    showPane(target);
+  }
 
-        var currentAccordion = $(this);
-        var collapse = currentAccordion.hasClass("collapse");
-
-        if (currentAccordion.children('.active').length === 0 && !collapse) {
-            currentAccordion.find('.trigger:first').addClass("first active");
-            currentAccordion.find('.pane:first').addClass("first active");
-
-            currentAccordion.find('.first').addClass("active").show();
-            currentAccordion.find('.pane').not('.active').hide();
+  return {
+    init : function(){
+      var $Accordions = $('.nuiAccordion');
+      // Loop through accordions an hide all but first.
+      $Accordions.each(function(index){
+        var $acc = $(this),
+            $panes = $acc.find('.pane'),
+            $triggers = $acc.find('.trigger');
+        
+        $panes.first()
+          .add($triggers.first())
+          .addClass("first active");          
+        $panes.not('.active').hide();
+      }); 
+    
+      
+      $Accordions.delegate('.trigger:not(.active), .nextPane', 'click', function(){
+        
+        var $obj = $(this), 
+            $acc = $obj.parents('.nuiAccordion'),  
+            target = {}, 
+            old = {};
+            
+        old.trigger = $acc.find('.trigger.active');
+        old.pane = $acc.find('.pane.active');
+        
+        if ($obj.hasClass('trigger')){
+          target.trigger = $obj;
+          target.pane = target.trigger.next('.pane');
         }
-
-        else {
-            currentAccordion.find('.pane').not('.active').hide();
+        
+        else if ($obj.hasClass('nextPane')){          
+          target.trigger = $obj.parents('.pane').next('.trigger');
+          target.pane = target.trigger.next('.pane');
+          
+          old.trigger.addClass('complete'); 
         }
-
-    });
-
-    // Delegate clicks to tabs that are not currently active.
-    ac.delegate('.nuiAccordion .trigger:not(.active)', 'click', function() {
-        nui.accordion.ChangePane($(this));
+        
+        changePane(target, old);
         return false;
-    });
+      });
+      
+      $Accordions.delegate('.close','click', function(){
+        hidePane({
+          trigger : $(this).parents('.pane').prev('.trigger'),
+          pane: $(this).parents('.pane')
+        });
+      });
+      
+    },
+    expandAll: function($obj){
+      $obj.find('.pane').show();
+    },
+    collapseAll: function($obj){
+      $obj.find('.pane').hide();
+    } 
+  };
+}());
 
-    // Delegate clicks to next button
-    ac.delegate('.nuiAccordion .pane .nextPane', 'click', function() {
-        nui.accordion.ChangePane($(this));
-        return false;
-    });
-
-    ac.delegate('.nuiAccordion .pane .close', 'click', function() {
-        nui.accordion.ChangePane($(this));
-        return false;
-    });
-};
-
-nui.accordion.ChangePane = function(o) {
-    // o = the object called upon
-    // $pp = previous pane, $np = next pane, $pt = previous trigger, $pp = next trigger
-    var $pt, $pp, $np, $nt, newParent;
-
-    // Check the type of trigger & set the references
-    if (o.hasClass('nextPane')) {
-        $pt = o.parents('.nuiAccordion').find('.trigger.active');
-        $pp = $pt.next('.pane');
-        newParent = o.attr('href');
-        $np = o.parents('.nuiAccordion').find(newParent);
-        $nt = $np.prev('.trigger');
+nui.form = (function(){
+  return {
+    init: function(){
     }
+  };
+}());
 
-    else if (o.hasClass('trigger')) {
-        $nt = o;
-        $np = o.next('.pane');
-        $pt = o.parent('.nuiAccordion').find('.trigger.active');
-        $pp = $pt.next('.pane');
-    }
+nui.openspace = (function(){
+  
+  return {
+    init : function(){
 
-    else if (o.hasClass('close')) {
-        $pt = o.parents('.nuiAccordion').find('.trigger.active');
-        $pp = $pt.next('.pane');
-        newParent = o.attr('href');
-        $np = $('.doesntexist');
-        $nt = $('.doesntexist');
-    }
-
-    // Call hidePane
-    nui.accordion.hidePane($pp, $np, $pt, $nt);
-};
-
-nui.accordion.hidePane = function($pp, $np, $pt, $nt) {
-
-    $pt.removeClass("active");
-    $pp.removeClass("active");
-    $nt.addClass('active');
-    $np.addClass('active');
-
-    nui.accordion.showPane($np, $nt);
-    $pp.animate({
-        'opacity': 0
-    }, 200, function() {});
-    $pp.slideUp(400);
-};
-
-nui.accordion.showPane = function($np, $nt) {
-    if ($nt) {
-        $np.css('opacity', 0).slideDown(400).animate({
-            'opacity': 1
-        }, 410);
-    }
-};
-
-nui.accordion.expandAll = function($obj) {
-    var $all_panes = $obj.find('.pane');
-    nui.accordion.showPane($all_panes, true);
-    $obj.find('.trigger').addClass('active');
-};
-
-
-/* ============= nuiForm ================================ */
-
-nui.form = new nui.ModuleBuilder();
-
-nui.form.reLink = function() {
-
-    $('.nuiForm .nuiAccordion').undelegate('.nuiAccordion .trigger:not(.active)', 'click');
-    $('.nuiForm .nuiAccordion').undelegate('.nuiAccordion .pane .nextPane', 'click');
-
-
-    var validate = true;
-
-    $('.nuiForm').delegate('.nuiAccordion .pane .nextPane', 'click', function() {
-
-        // ADD VALIDATE HERE!
-        $(this).parents('.pane').prev('.trigger').addClass('complete');
-        nui.accordion.ChangePane($(this));
-
-        return false;
-
-    });
-
-    // Delegate handler to allow going back to completed sections
-    $('.nuiForm').delegate('.nuiAccordion .trigger.complete:not(.active)', 'click', function() {
-        nui.accordion.ChangePane($(this));
-    });
-
-};
-
-nui.form.startUp = function() {
-    nui.form.reLink();
-};
-
-
-/* ============= nuiOpenspace ================================ */
-
-// Fancy cheatlinks
-nui.openspace = new nui.ModuleBuilder();
-
-
-// Bind cheatlinks
-nui.openspace.initialize = function() {
-
-    var $visual = $('#visual'),
-        $clickme = $visual.find('.omnilink').add('.clickme'),
-        $nav = $('#nav');
-
-    $clickme.show();
-
-    $('#nav').mouseenter(function(e) {
+      var $visual = $('#visual'),
+          $clickme = $visual.find('.omnilink').add('.clickme'),
+          $nav = $('#nav');
+      
+      $clickme.show();
+       
+      $nav.mouseenter(function(e) {
         $(this).toggleClass('inactive', 'active');
-
         $clickme.hide();
-
-    });
-
-    $('#nav').mouseleave(function(e) {
+      });
+      
+      $nav.mouseleave(function(e) {
         $(this).toggleClass('inactive', 'active');
 
         $clickme.show();
-    });
+      });   
 
+    }
+  };
+}());
 
-};
+$(document).ready(function(){
+  nui.accordion.init();
+  nui.form.init();
+});
 
 /* ============= Nui_Cookie ================================
 
@@ -220,86 +135,70 @@ Utitily to set and read cookies.
 
 */
 
-function NuiCookie() {
+nui.cookie = (function(){
 
-  	var self = this;
-
-    this.read = function(name) {
-        var nameEQ = name + "=",
-            ca = document.cookie.split(';'),
-            i, c;
-
-
-        for (i = 0; i < ca.length; i++) {
-            c = ca[i];
-
-            while (c.charAt(0) === ' ') {
-                c = c.substring(1, c.length);
-            }
-
-            if (c.indexOf(nameEQ) === 0) {
-                return c.substring(nameEQ.length, c.length);
-            }
-        }
-
-        return null;
-    };
+    var self = this;
     
-    this.create = function(name, value, days, path) {
-
-
-        var expires, date, path_to, new_cookie;
-        
-        path_to = "path=/";
-
-        if (days) {
-            date = new Date();
-            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-            expires = "; expires=" + date.toGMTString();
+    return {
+      read : function(name) {
+          var nameEQ = name + "=",
+              ca = document.cookie.split(';'),
+              i, c;
+    
+          for (i = 0; i < ca.length; i++) {
+              c = ca[i];
+  
+              while (c.charAt(0) === ' ') {
+                  c = c.substring(1, c.length);
+              }
+  
+              if (c.indexOf(nameEQ) === 0) {
+                  return c.substring(nameEQ.length, c.length);
+              }
+          }
+  
+          return null;
+      },      
+      create : function(name, value, days, path) {
+          var expires, date, path_to, new_cookie;         
+          path_to = "path=/"; 
+          if (days) {
+              date = new Date();
+              date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+              expires = "; expires=" + date.toGMTString();
+          } 
+          else {
+              expires = "";
+          }         
+          if (path){
+            path_to = path_to + path;
+          } 
+          document.cookie = name + "=" + value + expires + ";"+ path_to;          
+          new_cookie = self.read(name); 
+          return self.read(name);         
+      },      
+      // Expires cookie
+      destroy : function(name, path) {
+        if (self.read(name)){
+          self.create(name, "", -1, path);          
+          return true;
         }
-
         else {
-            expires = "";
+          return false;
+        } 
+      },      
+      update : function(name, value, days, path) {
+        var x;
+        if (self.read(name)){
+          x = self.create(name, value, days, path);           
+          return x;
         }
-        
-        if (path){
-        	path_to = path_to + path;
-        }
-
-        document.cookie = name + "=" + value + expires + ";"+ path_to;
-        
-        new_cookie = self.read(name);
-
-        return self.read(name);
-        
+        else {
+          return false;
+        } 
+      }
     };
-    
-    // Expires cookie
-    this.destroy = function(name, path) {
-    	if (self.read(name)){
-    		self.create(name, "", -1, path);     	   	
-    		return true;
-    	}
-    	else {
-    		return false;
-    	}	
-    };
-    
-    this.update = function(name, value, days, path) {
-    	var x;
-    	if (self.read(name)){
-    		x = self.create(name, value, days, path);     	   	
-    		return x;
-    	}
-    	else {
-    		return false;
-    	}	
-    };
-}
-
-nui.cookie = new NuiCookie();
-
-// nui.cookie.create('foo', 'bar', 14,'norway');
+}());
 
 /* ============= Nui_PopUp ================================
 
@@ -341,6 +240,7 @@ nui.popup = (function(){
       
     
       docH = $(document).height();
+      popup.content.show();
       popup.$dialog.append(popup.content)
         .append(popup.$close)
         .css('marginLeft', -(settings.dialog_width / 2))
@@ -349,7 +249,7 @@ nui.popup = (function(){
       popup.$mask.height(docH)
         .hide();
       $('body').append(popup.$mask)
-      	.append(popup.$dialog);
+        .append(popup.$dialog);
       
       popup.$mask.add(popup.$close)
         .bind('click', function(){
@@ -374,10 +274,14 @@ nui.popup = (function(){
   
   function close(id){
     var popup = popups[id];
-    popup.$dialog.empty().add(popup.$mask)
-      .fadeOut(popup.settings.anim_fadeOutSpeed, function(){
-      
-      });
+    //popup.$dialog.empty().add(popup.$mask).animate({}, 100, function(){});
+    
+    popup.$dialog.animate({
+      opacity: 0
+    }, popup.settings.anim_fadeOutSpeed, function(){
+      popup.$dialog.empty();
+      popup.$mask.fadeOut(300);    
+    });
       
       //Restart openspace
       stopMoving = false;
@@ -458,7 +362,7 @@ nui.popup = (function(){
       var $nonce = $('<div class="nonce">');
           
       if (sel) {
-      	url = url + ' ' + sel;
+        url = url + ' ' + sel;
       }     
       $nonce.load(url, function(response, status) {
         popups[id].content = $nonce;
@@ -485,127 +389,115 @@ nui.popup = (function(){
 
 /* ============= Nui_Sign_petition ================================
 
-	Signs a petition email with the details entered by the user.
+  Signs a petition email with the details entered by the user.
 
 */
 
-function Nui_signature() {
 
-	var form_fields = {
-		"first_name" : {
-			"id" : "#ctl00_cphContentArea_Action1_txtFullname_txtFirstName"
-		},
-		"last_name" : {
-			"id" : "#ctl00_cphContentArea_Action1_txtFullname_txtLastName"
-		},
-		"country" : {
-			"id" : "#ctl00_cphContentArea_Action1_ddlCountries"		
-		},
-		"mobile" : {
-			"id" : "#ctl00_cphContentArea_Action1_txtCellPhone"
-		}
+nui.sign_petition = (function(){
+  
+  var form_fields = {
+    "first_name" : {
+      "id" : "#ctl00_cphContentArea_Action1_txtFullname_txtFirstName"
+    },
+    "last_name" : {
+      "id" : "#ctl00_cphContentArea_Action1_txtFullname_txtLastName"
+    },
+    "country" : {
+      "id" : "#ctl00_cphContentArea_Action1_ddlCountries"   
+    },
+    "mobile" : {
+      "id" : "#ctl00_cphContentArea_Action1_txtCellPhone"
+    }
+  };
+  
+  function get_fields(){      
+    var ff, $ff, ff_tagName;
+  
+    for (var key in form_fields) {
+       if (form_fields.hasOwnProperty(key)) {
+         ff = form_fields[key];
+         $ff = $(ff.id);  
+         
+         if ($ff.length > 0){
+           ff_tagName = $ff[0].tagName;                    
+           
+           if (ff_tagName === "INPUT"){           
+            ff.value = $(ff.id).val();            
+           }
+           
+           else if (ff_tagName === "SELECT"){       
+            ff.value = $(ff.id).find(":selected").val();
+           }
+         }
+       }
+    } 
+  }   
 
-	};
+  // add the signature to the textarea
+  function update_body(){
+    get_fields();
+    var $email_body, email_content, splitter;
+    
+    splitter = " - - - - - ";
+        
+    
+    $email_body = $("#ctl00_cphContentArea_Action1_txtBody");
+    email_content = $email_body.val();      
+    
+    // Split content to remove old signature.
+    email_content = email_content.split( splitter )[0];
+    
+    // If firstname / lastname
+    if (form_fields.first_name.value){
+      // Add stupid splitter
+      email_content = email_content + splitter;
+    
+      // Add firstname / lastname
+      email_content = email_content + " " + form_fields.first_name.value;
+      
+      if (form_fields.last_name.value){
+        email_content = email_content + "/n" + form_fields.last_name.value;
+      }
+      
+      // Add country
+      if (form_fields.country.value){
+        email_content = email_content + "/n" + form_fields.country.value;
+      }
+      
+      $email_body.val(email_content);       
+    }
+  }
 
-	function get_fields(){
-			
-		var ff, $ff, ff_tagName;
-	
-		for (var key in form_fields) {
-		   if (form_fields.hasOwnProperty(key)) {
-		     ff = form_fields[key];
-		     $ff = $(ff.id);  
-		     
-		     if ($ff.length > 0){
-		     	 ff_tagName = $ff[0].tagName;			     			     
-			     
-			     if (ff_tagName === "INPUT"){			     	
-			     	ff.value = $(ff.id).val();			     	
-			     }
-			     
-			     else if (ff_tagName === "SELECT"){
-			      var iso =	 $(ff.id).find(":selected").val();	     	
-			     	ff.value = iso_3166_eng[iso.toUpperCase()];
-			     }
-		     }
-		   }
-		}	
-	}		
-
-	// add the signature to the textarea
-	function update_body(){
-		get_fields();
-		var $email_body, email_content, splitter;
-		
-		splitter = "\n - - - - - ";
-				
-		
-		$email_body = $("#ctl00_cphContentArea_Action1_txtBody");
-		email_content = $email_body.val();			
-		
-		// Split content to remove old signature.
-		email_content = email_content.split( splitter )[0];
-		
-		// If firstname / lastname
-		if (form_fields.first_name.value){
-			// Add stupid splitter
-			email_content = email_content + splitter;
-		
-			// Add firstname / lastname
-			email_content = email_content + "\n" + form_fields.first_name.value;
-			
-			if (form_fields.last_name.value){
-				email_content = email_content + " " + form_fields.last_name.value;
-			}
-			
-			// Add country
-			if (form_fields.country.value){
-				email_content = email_content + ",\n" + form_fields.country.value;
-			}
-			
-			$email_body.val(email_content);				
-		}
-	}
-	
-	function add_hander($obj){
-		$obj.change(function(){
-			update_body();		
-		});
-	}
-	
-	this.initialize = function(){
-		
-		if ($('body').hasClass('letter')){
-			
-			// Update once to catch logged in users - such as webbies.
-			update_body();
-		
-						
-			// Bind event handlers to the form fields
-			for (var key in form_fields){							
-				if (form_fields.hasOwnProperty(key)) {
-					add_hander($(form_fields[key].id));	
-				}				
-			}	
-		}			
-	};	
-}	
-
-nui.sign_petition = new Nui_signature();
+  function add_hander($obj){
+    $obj.change(function(){
+      update_body();    
+    });
+  }
+  
+  return {
+    init : function(){
+      if ($('body').hasClass('letter')){
+        update_body();
+        for (var key in form_fields){             
+          if (form_fields.hasOwnProperty(key)) {
+            add_hander($(form_fields[key].id)); 
+          }
+        }       
+      } 
+    } 
+  };
+}());
 
 /* ============= Safe-fire Modules @ Doc ready ================================ */
-$(document).ready(function() {
-
-    if (typeof nui.accordion.initialize === 'function') {
-        nui.accordion.initialize();
+$(document).ready(function(){
+  for (var key in nui){
+    if (nui.hasOwnProperty(key)){
+      if (nui[key].hasOwnProperty('init')){
+        if (typeof nui[key].init === 'function'){
+          nui[key].init();
+        }
+      }
     }
-    
-    if (typeof nui.sign_petition.initialize === 'function'){
-    	nui.sign_petition.initialize();
-    }
-    
-    if (typeof nui.openspace.initialize === 'function') {
-        nui.openspace.initialize();
-    }
-
+  } 
 });
