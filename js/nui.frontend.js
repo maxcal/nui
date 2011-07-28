@@ -457,12 +457,7 @@ nui.sign_petition = (function(){
       email_content = email_content + " " + form_fields.first_name.value;
       
       if (form_fields.last_name.value){
-        email_content = email_content + "/n" + form_fields.last_name.value;
-      }
-      
-      // Add country
-      if (form_fields.country.value){
-        email_content = email_content + "/n" + form_fields.country.value;
+        email_content = email_content + " " + form_fields.last_name.value;
       }
       
       $email_body.val(email_content);       
