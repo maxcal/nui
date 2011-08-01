@@ -262,7 +262,8 @@ nui.popup = (function(){
         
         // Check for Image resize 
         if (imgFull.length > 0){
-          imgWidth = imgFull.css('width');
+        	console.info('has image!');
+          imgWidth = imgFull.outerWidth(false);
 
           $(this).css({
             'width' : imgWidth,
@@ -331,7 +332,9 @@ nui.popup = (function(){
       popups[id].$close = $('<a class="nuiButton close" href="#">');    
       
       // Setup mask
-      popups[id].$mask.addClass(id);    
+      popups[id].$mask.addClass(id)
+      	.addClass(popups[id].settings.template)
+        .addClass(popups[id].settings.skin);    
       
       // Setup Dialog
       popups[id].$dialog.addClass(id)
@@ -341,6 +344,7 @@ nui.popup = (function(){
       // Setup Close button
       popups[id].$close.addClass(id)
         .attr('title', popups[id].settings.close_title);
+      
       
       // Apply custom CSS
       if (popups[id].settings.dialog_custom_css) {
