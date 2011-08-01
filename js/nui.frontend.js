@@ -262,8 +262,9 @@ nui.popup = (function(){
         
         // Check for Image resize 
         if (imgFull.length > 0){
-        	console.info('has image!');
+        	
           imgWidth = imgFull.outerWidth(false);
+          console.info('has image!', imgWidth);
 
           $(this).css({
             'width' : imgWidth,
