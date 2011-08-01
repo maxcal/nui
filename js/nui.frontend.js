@@ -235,17 +235,19 @@ nui.popup = (function(){
     if (popups.hasOwnProperty(id)){   
       // HALT OPENSPACE
       stopMoving = true;
+      
+      // Shortcuts
       settings = popups[id].settings;
       popup = popups[id];
-      
-    
       docH = $(document).height();
+     
       popup.content.show();
       popup.$dialog.append(popup.content)
         .append(popup.$close)
         .css('marginLeft', -(settings.dialog_width / 2))
         .width(settings.dialog_width)
         .hide();
+      
       popup.$mask.height(docH)
         .hide();
       $('body').append(popup.$mask)
@@ -258,7 +260,20 @@ nui.popup = (function(){
             
       // Set dialog position.
       popup.$dialog.fadeTo(0, 0.001, function(){
-        var d_offset = popup.$dialog.height() / 2 + 50;      
+        var d_offset = popup.$dialog.height() / 2 + 50,
+            imgFull = $(this).find('#thumbExtImg'),
+            imgWidth = 0;
+        
+        // Check for Image resize 
+        if (imgFull.length > 0){
+          imgWidth = imgFull.css('width');
+
+          $(this).css({
+            'width' : imgWidth,
+            'marginLeft' : -(imgWidth / 2) 
+          });
+        }
+            
         if ($(this).height() > docH){
           $(this).css('marginTop', -d_offset);
         }
@@ -268,8 +283,7 @@ nui.popup = (function(){
       })
       .fadeTo(settings.anim_fadeInSpeed, 1);
       popup.$mask.fadeTo(settings.anim_fadeInSpeed, settings.mask_opacity);     
-    }
-    
+    }    
   }
   
   function close(id){
@@ -358,16 +372,28 @@ nui.popup = (function(){
       }
     },
     
-    load: function (id, url, sel, onClose){
+    load: function (id, url, sel, params, onClose){
       var $nonce = $('<div class="nonce">');
           
       if (sel) {
         url = url + ' ' + sel;
-      }     
-      $nonce.load(url, function(response, status) {
-        popups[id].content = $nonce;
-        display(id, onClose);
-      });
+      }
+      
+      if (params){
+        $nonce.load(url, function(response, status) {
+          popups[id].content = $nonce;
+          display(id, onClose);
+        });
+      }
+      
+      else {
+        $nonce.load(url, function(response, status) {
+          popups[id].content = $nonce;
+          display(id, onClose);
+        });
+      }
+      
+     
      
     },
     
