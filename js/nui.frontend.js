@@ -221,16 +221,12 @@ nui.popup = (function(){
         mask_custom_css: false,
         anim_fadeIn_speed: 500,
         anim_fadeOut_speed: 400,
-        cookie_name: false,
-        cookie_expires_days: 14,
-        cookie_disabled: false,
         ga_tracking_page: false,
-        close_title: "Close",
         onClose : function(){}
       };
     
   function display(id){
-    var docH, offset_pos, popup, settings;        
+    var docH, popup, settings;        
  
     if (popups.hasOwnProperty(id)){   
       // HALT OPENSPACE
@@ -304,8 +300,7 @@ nui.popup = (function(){
 
   // Public methods
   return {
-    
-    
+       
     // Create a new popup with unique settings
     create : function(id, settings){
           
@@ -372,15 +367,11 @@ nui.popup = (function(){
       }
     },
     
-    load: function (id, url, sel, params, onClose){
+    load: function (id, url, params, onClose){
       var $nonce = $('<div class="nonce">');
-          
-      if (sel) {
-        url = url + ' ' + sel;
-      }
       
       if (params){
-        $nonce.load(url, function(response, status) {
+        $nonce.load(url, params, function(response, status) {
           popups[id].content = $nonce;
           display(id, onClose);
         });

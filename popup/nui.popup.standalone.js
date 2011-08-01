@@ -1,5 +1,13 @@
 var nui = {};
 
+/* ============= Nui_PopUp ================================
+
+NuiPopup is a Jquery / CSS module in the NUI family. Its purpose is to display messages to the user in a "modal" dialog. It is nonblocking and can be used to display any content.
+
+http://www.greenpeace.org/finland/nui/documentation/nuiPopup/
+
+*/
+
 nui.popup = (function(){
 
   var popups = {},        
@@ -22,26 +30,28 @@ nui.popup = (function(){
       };
     
   function display(id){
-    var docH, offset_pos, popup, settings;        
+    var docH, popup, settings;        
  
     if (popups.hasOwnProperty(id)){   
       // HALT OPENSPACE
       stopMoving = true;
+      
+      // Shortcuts
       settings = popups[id].settings;
       popup = popups[id];
-      
-    
       docH = $(document).height();
+     
       popup.content.show();
       popup.$dialog.append(popup.content)
         .append(popup.$close)
         .css('marginLeft', -(settings.dialog_width / 2))
         .width(settings.dialog_width)
         .hide();
+      
       popup.$mask.height(docH)
         .hide();
       $('body').append(popup.$mask)
-      	.append(popup.$dialog);
+        .append(popup.$dialog);
       
       popup.$mask.add(popup.$close)
         .bind('click', function(){
@@ -50,7 +60,20 @@ nui.popup = (function(){
             
       // Set dialog position.
       popup.$dialog.fadeTo(0, 0.001, function(){
-        var d_offset = popup.$dialog.height() / 2 + 50;      
+        var d_offset = popup.$dialog.height() / 2 + 50,
+            imgFull = $(this).find('#thumbExtImg'),
+            imgWidth = 0;
+        
+        // Check for Image resize 
+        if (imgFull.length > 0){
+          imgWidth = imgFull.css('width');
+
+          $(this).css({
+            'width' : imgWidth,
+            'marginLeft' : -(imgWidth / 2) 
+          });
+        }
+            
         if ($(this).height() > docH){
           $(this).css('marginTop', -d_offset);
         }
@@ -60,8 +83,7 @@ nui.popup = (function(){
       })
       .fadeTo(settings.anim_fadeInSpeed, 1);
       popup.$mask.fadeTo(settings.anim_fadeInSpeed, settings.mask_opacity);     
-    }
-    
+    }    
   }
   
   function close(id){
@@ -69,10 +91,10 @@ nui.popup = (function(){
     //popup.$dialog.empty().add(popup.$mask).animate({}, 100, function(){});
     
     popup.$dialog.animate({
-    	opacity: 0
+      opacity: 0
     }, popup.settings.anim_fadeOutSpeed, function(){
-    	popup.$dialog.empty();
-    	popup.$mask.fadeOut(300);    
+      popup.$dialog.empty();
+      popup.$mask.fadeOut(300);    
     });
       
       //Restart openspace
@@ -150,17 +172,26 @@ nui.popup = (function(){
       }
     },
     
-    load: function (id, url, sel, onClose){
+    load: function (id, url, sel, params, onClose){
       var $nonce = $('<div class="nonce">');
           
       if (sel) {
-      	url = url + ' ' + sel;
-      }     
-      $nonce.load(url, function(response, status) {
-        popups[id].content = $nonce;
-        display(id, onClose);
-      });
-     
+        url = url + ' ' + sel;
+      }
+      
+      if (params){
+        $nonce.load(url, function(response, status) {
+          popups[id].content = $nonce;
+          display(id, onClose);
+        });
+      }
+      
+      else {
+        $nonce.load(url, function(response, status) {
+          popups[id].content = $nonce;
+          display(id, onClose);
+        });
+      }
     },
     
     frag : function (id, $obj, onClose){
@@ -178,6 +209,5 @@ nui.popup = (function(){
   };
 
 }());
-
 
 
