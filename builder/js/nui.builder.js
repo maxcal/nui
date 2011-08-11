@@ -228,6 +228,42 @@ Openspace
 A css / html visual item for use in the big old openspace.
 
 */
+
+		var vidbox = createModule("vidbox");
+    /*
+  	vidbox.options = {
+
+        base: {
+            template: {
+                properties: ['Box and Image']
+            },
+            skin: {
+                properties: ['basic (skin1)', 'Rounded and shadowed (skin2)']
+            },
+        },
+
+        pane: {
+            hasMultiplePane: true,
+            header: false,
+            content: false,
+            url: true,
+        }
+    };
+
+    
+    vidbox.build = function(){
+    	var $obj, $play_window, $play_list;
+    	
+    	$obj = $('<div class="nuiVidbox">');
+    	$play_window = $('<div class="play_window">');
+    	$play_list = $('<ul class="playlist">');
+    	
+    	$obj.append($play_window)
+    			.append($play_list);
+    
+    };
+    */
+
     var openspace = createModule("openspace");
 
     openspace.options = {
@@ -521,6 +557,10 @@ A css / html visual item for use in the big old openspace.
 
         return $o;
     };
+    
+    
+
+    
 
     //------------ basicList ------------------------------- //
     var basicList = createModule("basicList");
