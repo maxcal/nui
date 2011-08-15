@@ -248,12 +248,14 @@ nui.popup  = (function(){
       $closeBtn = $('<a class="nuiButton close" href="#">');
       
       function Reset(){
+        // Reset to avoid duplicate properties
         $mask.add($dialog)
           .removeClass(_settings.template)
           .removeClass(_settings.skin);
       }     
       // Setup
       function setup_components(){
+         // Add skins 
         Reset();
         $mask.add($dialog)
           .addClass(_settings.template)
@@ -272,12 +274,28 @@ nui.popup  = (function(){
          $closeBtn.removeClass('busy');
          $dialog.remove();
          stopMoving = false;
+         
+         // Remove event handlers
+         $(window).unbind('resize');
+         $(document).unbind('keyup');
       }
       
-      function Display(self, obj){        
-         $mask
-            .hide();
+      function Display(self, obj, onClose, target){
+      	
+         var scrolltop, $target;
+         
+         if ( target && typeof target === 'object'){
+         	$target = target;
+         }
+         else {
+         	$target = $("body");
+         }
+         
+         $mask.hide();
+         $dialog.css('visibility', 'hidden');
          $('body').append($mask);
+         $target.append($dialog);
+         // Setup object
          $dialog.append(obj)
             .append($closeBtn)
             .width(_settings.dialog_width)
@@ -285,24 +303,46 @@ nui.popup  = (function(){
                // Center box with negative margins.
                marginLeft: (function(){
                   return (- ($dialog.outerWidth() / 2)) + 'px';
-               }())            
-            })
-            .animate({opacity: 0}, 0);
-         $('body').append($dialog);
-         $dialog.fadeIn();       
-         $dialog.css('top', $('html').scrollTop() + 15 + "px");           
+               }()),
+               opacity: 0,  
+               visibility: 'visible'          
+            });
+  
+         $dialog.fadeIn();
+        	// Gecko has scroll on HTML element
+         if ($('html').scrollTop() > $('body').scrollTop()){
+         	scrolltop = $('html').scrollTop();         	 
+         }
+         // Webkit has scroll on Body element
+         else {
+         	scrolltop = $('body').scrollTop();
+         }
+
+         $dialog.css('top', scrolltop + 25 + "px");           
          $mask.height($(document).height());
+         
+         // Bind event handlers
          $mask.add($closeBtn).bind('click', function(){
           Close(self);   
           return false;                
-         });      
+         });
+         // Adjust mask height so that it covers window
+         $(window).bind('resize', function() {
+         	$mask.height($(this).height());
+         });
+         // Bind escape button
+         $(document).bind('keyup', function(e){
+						if (e.keyCode == 27) { Close(); }   // esc
+				 });
+				 
+				 // Fade in popup
          $mask.fadeIn(500);
          $dialog.animate({
             opacity : 1
-         }, 1000);
+         }, 1000);  
       }
 
-      function Load(self, url, params, onClose){
+      function Load(self, url, params, onClose, target){
          var $nonce = $('<div class="nonce">');
          if (params){
             $nonce.load(url, params, function(response, status) {
@@ -318,14 +358,20 @@ nui.popup  = (function(){
          }
       }
       
-      function Frag(self, obj, clone, onClose){                
+      function Frag(self, obj, clone, onClose, target){        
          if (clone){
-            obj = obj.clone();
+            obj = obj.clone(true, true);
          }
-         Display(self, obj, onClose);     
+         Display(self, obj, onClose, target);     
       }
       
       function Attr(self, key, val){
+      	 if (typeof key === 'object'){
+      	 	Reset();
+      	 	CreateSettings(key);
+      	 	setup_components();      	 	
+      	 }
+      	 
          if (val){
             _settings[key] = val;
          }
@@ -334,11 +380,11 @@ nui.popup  = (function(){
          }
       }
       return {
-         load: function(url, params, onClose){
-            Load(this, url, params, onClose);
+         load: function(url, params, onClose, target){         		
+            Load(this, url, params, onClose, target);
          },
-         frag: function(obj, onClose){
-            Frag(this, obj, onClose);
+         frag: function(obj, clone, onClose, target){
+            Frag(this, obj, clone, onClose, target);
          },
          attr: function(key, val){
             val = val || null;
@@ -371,11 +417,11 @@ nui.popup  = (function(){
       },
       set_defualt : function(id){
          def_popup = popupData[id];
-         this.load = function(url, params, onClose){
+         this.load = function(url, params, onClose, target){
             def_popup.load(url, params, onClose);
          };
-         this.frag = function(obj, clone, onClose){
-            def_popup.frag(obj, clone, onClose);
+         this.frag = function(obj, clone, onClose, target){
+            def_popup.frag(obj, clone, onClose, target);
          };
          this.attr = function(key, val){
             if (val){
