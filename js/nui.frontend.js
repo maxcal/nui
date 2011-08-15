@@ -136,8 +136,6 @@ Utitily to set and read cookies.
 */
 
 nui.cookie = (function(){
-
-    var self = this;
     
     return {
       read : function(name) {
@@ -156,7 +154,6 @@ nui.cookie = (function(){
                   return c.substring(nameEQ.length, c.length);
               }
           }
-  
           return null;
       },      
       create : function(name, value, days, path) {
@@ -174,13 +171,13 @@ nui.cookie = (function(){
             path_to = path_to + path;
           } 
           document.cookie = name + "=" + value + expires + ";"+ path_to;          
-          new_cookie = self.read(name); 
-          return self.read(name);         
+          new_cookie = this.read(name); 
+          return new_cookie;         
       },      
       // Expires cookie
       destroy : function(name, path) {
         if (self.read(name)){
-          self.create(name, "", -1, path);          
+          this.create(name, "", -1, path);          
           return true;
         }
         else {
@@ -189,8 +186,8 @@ nui.cookie = (function(){
       },      
       update : function(name, value, days, path) {
         var x;
-        if (self.read(name)){
-          x = self.create(name, value, days, path);           
+        if (this.read(name)){
+          x = this.create(name, value, days, path);           
           return x;
         }
         else {
@@ -441,6 +438,11 @@ nui.popup  = (function(){
       attr : null    
    };
 }());
+
+$(document).ready(function(){
+	nui.popup.init();
+});
+
 /* ============= Nui_Sign_petition ================================
 
   Signs a petition email with the details entered by the user.
@@ -534,7 +536,7 @@ nui.sign_petition = (function(){
           }
         }       
       } 
-    } 
+    }
   };
 }());
 
@@ -548,5 +550,6 @@ $(document).ready(function(){
         }
       }
     }
-  } 
+  }
+  
 });
