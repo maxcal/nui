@@ -559,6 +559,6 @@ $(document).ready(function(){
   }
   
   // Fire NUI READY CUSTOM EVENT
-  $(document).trigger('nuiReady', ['foo', 'bar']);
+  $('body').trigger('nuiReady', ['foo', 'bar']);
   
 });
