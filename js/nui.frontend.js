@@ -10,7 +10,6 @@ var nui = function(){
   };
 };
 
-
 /* ============= nuiAccordion ================================ */
 
 nui.accordion = (function(){  
@@ -219,7 +218,7 @@ nui.popup  = (function(){
     mask_custom_css: false,
     anim_fadeIn_speed: 500,
     anim_fadeOut_speed: 400,
-    color : 'black',
+    maskcolor : 'black',
     onClose : function(){}
   };
   
@@ -257,6 +256,12 @@ nui.popup  = (function(){
         $mask.add($dialog)
           .addClass(_settings.template)
           .addClass(_settings.skin);
+        if (_settings.mask_custom_css){
+        	$mask.css(_settings.mask_custom_css);
+        }
+        if (_settings.dialog_custom_css){
+        	$dialog.css(_settings.dialog_custom_css);
+        }
       }
       setup_components();
       
@@ -271,7 +276,6 @@ nui.popup  = (function(){
          $closeBtn.removeClass('busy');
          $dialog.remove();
          stopMoving = false;
-         
          // Remove event handlers
          $(window).unbind('resize');
          $(document).unbind('keyup');
@@ -324,19 +328,21 @@ nui.popup  = (function(){
           return false;                
          });
          // Adjust mask height so that it covers window
-         $(window).bind('resize', function() {
-         	$mask.height($(this).height());
+         $(window).bind('resize scroll', function() {
+         	$mask.height($(document).height());
+         	$mask.width($('body').width());
          });
+         
          // Bind escape button
          $(document).bind('keyup', function(e){
 						if (e.keyCode == 27) { Close(); }   // esc
 				 });
 				 
 				 // Fade in popup
-         $mask.fadeIn(500);
+         $mask.fadeTo(400, _settings.mask_opacity);
          $dialog.animate({
             opacity : 1
-         }, 1000);  
+         }, 600);  
       }
 
       function Load(self, url, params, onClose, target){
@@ -551,5 +557,8 @@ $(document).ready(function(){
       }
     }
   }
+  
+  // Fire NUI READY CUSTOM EVENT
+  $(document).trigger('nuiReady', ['foo', 'bar']);
   
 });
