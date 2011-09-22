@@ -123,9 +123,47 @@ nui.openspace = (function(){
   };
 }());
 
+nui.pdf = (function() {  
+	return {
+		init : function(){
+			  // Check for PDF links
+		  $('a').each(function(){
+		      var pdfExt = /\.pdf$/i,
+		      		href = $(this).attr('href');
+		  
+		      if ( pdfExt.test(href)) {
+		          $(this).addClass('pdf');
+		      }
+		  });
+		  
+		  // Google track PDFs
+		  $('a.pdf').live('click', function($){
+		    
+		    var base_url, absolute_url;
+		    // test for P3 env variable resources.baseurl
+		    
+		    base_url = resources.baseurl || "http://www.greenpeace.org/international/";
+		    
+		    // Self-Invoking Function - returns abs
+		    absolute_url = (function(url, base_url){  
+		     if (url.charAt(0) === '/') {
+		        url = base_url + url.substr(1);
+		     }  
+		     return url;
+		    }( $(this).attr('href'), base_url));
+		    
+		    // Push it too ye old google
+		    _gaq.push(['_trackPageview', absolute_url]);  
+		  });	
+		}
+	};
+}());
+
+
 $(document).ready(function(){
   nui.accordion.init();
   nui.form.init();
+  nui.pdf.init();
 });
 
 /* ============= Nui_Cookie ================================
@@ -223,13 +261,13 @@ nui.popup  = (function(){
   };
   
    Popup_Const = function(settings, name){   
-      var _settings = {}, $mask, $dialog, $closeBtn, x;      
+      var _settings = {}, $mask, $dialog, $closeBtn, key;      
       
       function CreateSettings(s) {
          
          var y = {};
         
-         for (var key in default_settings){
+         for (key in default_settings){
             y[key] = default_settings[key];
          }        
          for (key in s){
@@ -474,9 +512,9 @@ nui.sign_petition = (function(){
   };
   
   function get_fields(){      
-    var ff, $ff, ff_tagName;
+    var ff, $ff, ff_tagName, key;
   
-    for (var key in form_fields) {
+    for (key in form_fields) {
        if (form_fields.hasOwnProperty(key)) {
          ff = form_fields[key];
          $ff = $(ff.id);  
@@ -534,9 +572,10 @@ nui.sign_petition = (function(){
   
   return {
     init : function(){
+    	var key;
       if ($('body').hasClass('letter')){
         update_body();
-        for (var key in form_fields){             
+        for (key in form_fields){             
           if (form_fields.hasOwnProperty(key)) {
             add_hander($(form_fields[key].id)); 
           }
@@ -559,6 +598,6 @@ $(document).ready(function(){
   }
   
   // Fire NUI READY CUSTOM EVENT
-  $('body').trigger('nuiReady', ['foo', 'bar']);
+  $(document).trigger('nuiReady', ['foo', 'bar']);
   
 });
