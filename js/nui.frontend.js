@@ -308,7 +308,10 @@ nui.popup  = (function(){
             opacity: 0
          }, _settings.anim_fadeOutSpeed, function(){
             //$dialog.empty();
-            $mask.fadeOut(300);
+            $dialog.empty().remove();
+            $mask.fadeOut(300, function(){
+            	 $mask.empty().remove();
+            });
          });
          $mask.removeClass('busy');
          $closeBtn.removeClass('busy');
