@@ -307,12 +307,12 @@ nui.popup  = (function(){
          $dialog.animate({
             opacity: 0
          }, _settings.anim_fadeOutSpeed, function(){
-            $dialog.empty();
+            //$dialog.empty();
             $mask.fadeOut(300);
          });
          $mask.removeClass('busy');
          $closeBtn.removeClass('busy');
-         $dialog.remove();
+         //$dialog.remove();
          stopMoving = false;
          // Remove event handlers
          $(window).unbind('resize');
