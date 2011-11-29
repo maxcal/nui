@@ -38,6 +38,9 @@ maintained by max.calabrese@greenpeace.org
 // http://perishablepress.com/press/2008/02/05/lessons-learned-concerning-the-clearfix-css-hack/
 
 
+// Fix Anchor link defaults:
+html body a { color: #559F0C; }
+
 // Add selecors here:
 .clearfix, .copyright, .horizontal-list,.navTabs, .inputRow, .nuiForm fieldset, .pane, .basicList li, .basicList dd {
 	

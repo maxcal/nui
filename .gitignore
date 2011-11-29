@@ -7,3 +7,5 @@ log/*.log
 .project
 .DS_Store
 .sas-catche/**/* 
+/nbproject/private/
+/.sass-cache/
