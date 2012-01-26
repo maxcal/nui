@@ -603,4 +603,8 @@ $(document).ready(function(){
   // Fire NUI READY CUSTOM EVENT
   $(document).trigger('nuiReady', ['foo', 'bar']);
   
+  // Restore login / logout links for p3-admin
+  if (window.location.host === 'p3-admin.greenpeace.org') {
+	$('.navigation .sign').show();
+  }
 });
