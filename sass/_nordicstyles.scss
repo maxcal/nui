@@ -1,6 +1,11 @@
+/* Hide login / signup */
+.navigation .sign {
+   display: none !important; 
+}
+
 // Show share box in articles
-	.article #content .share-box {
-		display: block;
+.article #content .share-box {
+    display: block;
 }
 
 #content {
@@ -60,12 +65,10 @@
 	
 }
 // Remove content type in sidebar.
-/*
 #sidebar .listings .contenttype {
 	display: none;
 
 }
-*/
 
 // Background color for image holder on media hub
 .marticle #content .tab .news .img-holder{
