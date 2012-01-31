@@ -8,6 +8,20 @@
     display: block;
 }
 
+// change color of donate links
+// @see ticket #134092
+#header #nav {
+    a.donate-active, a.donate {
+        background-image: url('/finland/Global/finland/nui/images/navigation/nui-bg-nav-don.png');      
+        span {
+            background-image: url('/finland/Global/finland/nui/images/navigation/nui-nav-r-don.png');
+            color: #FFF;
+        }
+    }
+}
+
+
+
 #content {
 	// Fix margins for Letters that extend above x height. 
 	.img-and-text h3, .tab .news-content h3 {
