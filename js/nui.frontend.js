@@ -598,6 +598,10 @@ $(document).ready(function(){
         }
       }
     }
+    
+    // Hotfix for broken "add a comment" anchor link
+    $('a[href="#addcomment"]').attr('href','#disqus_thread');
+    
   }
   
   // Fire NUI READY CUSTOM EVENT
